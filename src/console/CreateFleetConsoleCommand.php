@@ -6,7 +6,6 @@ use App\command\fleet\infra\FleetRepositoryInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -34,24 +33,27 @@ class CreateFleetConsoleCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $userId = $input->getArgument('userId');
 
-        if ($userId) {
-            $fleets = $this->fleetRepository->all();
+        if (!isset($userId) || $userId <= 0) {
 
-            if (!array_key_exists($userId, $fleets)) {
-                $this->fleetRepository->addFleet($userId);
-                $io->success(
-                    sprintf(
-                        'created successfully fleet ID %s !',
-                        $userId
-                    )
-                );
-                return $userId;
-            }
-            $io->error('this user already has a fleet ID ' . $userId);
+            $io->error('invalid user ID');
+            return 0;
         }
 
-        $io->error('invalid user ID');
+        if (array_key_exists($userId, $this->fleetRepository->all())) {
 
-        return 0;
+            $io->error('this user already has a fleet ID ' . $userId);
+            return 0;
+        }
+
+        $this->fleetRepository->addFleet($userId); // @todo refactor with CreateFleetCommandHandler & TDD here
+
+        $io->success(
+            sprintf(
+                'created successfully fleet ID %s !',
+                $userId
+            )
+        );
+
+        return $userId;
     }
 }
