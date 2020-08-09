@@ -13,7 +13,12 @@ use App\command\fleet\domain\Vehicle;
 class InMemoryFleetRepository implements FleetRepositoryInterface
 {
 
-    private array $fleets;
+    private array $fleets = array();
+
+    public function __construct()
+    {
+//        $this->fleets[12] =  array();
+    }
 
     public function addFleet(string $userId): void
     {
@@ -55,6 +60,11 @@ class InMemoryFleetRepository implements FleetRepositoryInterface
     public function getfooVehicleGeolocation(string $fooVehicleRegistrationNumber, string $myUserId, Geolocation $barLocation): ?Geolocation
     {
         return new Geolocation('43.300000', '5.400000');
+    }
+
+    public function all(): array
+    {
+        return $this->fleets;
     }
 
 
