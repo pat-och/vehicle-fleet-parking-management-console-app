@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\command\fleet;
+namespace Tests\acceptance\command\fleet;
 
 use App\command\fleet\app\RegisterVehicleCommand;
 use App\command\fleet\app\RegisterVehicleCommandHandler;
