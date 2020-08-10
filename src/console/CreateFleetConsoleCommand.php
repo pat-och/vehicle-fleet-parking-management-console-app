@@ -2,7 +2,11 @@
 
 namespace App\console;
 
+use App\command\fleet\app\CreateFleetCommand;
+use App\command\fleet\app\CreateFleetCommandHandler;
 use App\command\fleet\infra\FleetRepositoryInterface;
+use App\command\fleet\infra\InMemoryFleetRepository;
+use App\command\shared\app\CommandResponse;
 use App\query\app\FleetQueryHandlerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -31,7 +35,7 @@ class CreateFleetConsoleCommand extends Command
     {
         $this
             ->setDescription('Create a fleet for a given user with his ID')
-            ->addArgument('userId', InputArgument::REQUIRED, 'enter user ID')
+            ->addArgument('userId', InputArgument::REQUIRED, 'user ID')
         ;
     }
 
@@ -45,13 +49,23 @@ class CreateFleetConsoleCommand extends Command
             return 0;
         }
 
-        if (array_key_exists($userId, $this->fleetQueryHandler->getAll())) {
+        $fleetRepository = new InMemoryFleetRepository();
+        $fleetRepository->addFleet('12');
 
-            $io->error('this user already has a fleet ID ' . $userId);
+        $commandResponse = new CommandResponse();
+        $createFleetCommandHandler = new CreateFleetCommandHandler($fleetRepository, $commandResponse);
+        $createFleetCommandHandler->handle(new CreateFleetCommand($userId));
+
+        if ($commandResponse->hasError()) {
+            $io->error(
+                sprintf(
+                    $commandResponse->getError() . ' %s',
+                    $userId
+                )
+            );
             return 0;
         }
 
-        $this->fleetRepository->addFleet($userId); // @todo refactor with CreateFleetCommandHandler & TDD here
 
         $io->success(
             sprintf(

@@ -24,4 +24,9 @@ class CommandResponse
     {
         return $this->error;
     }
+
+    public function hasError()
+    {
+        return null !== $this->error;
+    }
 }
