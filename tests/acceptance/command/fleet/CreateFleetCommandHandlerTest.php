@@ -22,24 +22,23 @@ class CreateFleetCommandHandlerTest extends TestCase
         $fooUserId = $this->fooUserExists();
 
         $fleetRepository = new InMemoryFleetRepository();
-        $createFleetCommand = new CreateFleetCommand($fooUserId);
-
-        $this->createFleet(
-            $createFleetCommand,
-            $fleetRepository
-        );
+        $this->createFleet($fooUserId, $fleetRepository);
 
         $this->assertNotNull($fleetRepository->getFleet($fooUserId));
     }
+
+
 
     private function fooUserExists()
     {
         return 'foo';
     }
 
-    private function createFleet(CreateFleetCommand $createFleetCommand, FleetRepositoryInterface $fleetRepository)
+    private function createFleet(string $userId, FleetRepositoryInterface $fleetRepository)
     {
+        $createFleetCommand = new CreateFleetCommand($userId);
         $commandResponse = new CommandResponse();
+
         $createFleetCommandHandler = new CreateFleetCommandHandler($fleetRepository, $commandResponse);
         $createFleetCommandHandler->handle($createFleetCommand->getUserId());
     }
