@@ -27,7 +27,13 @@ class CreateFleetCommandHandlerTest extends TestCase
         $this->assertNotNull($fleetRepository->getFleet($fooUserId));
     }
 
+    /**
+     * @test
+     */
+    public function cantCreateTwiceSameFleetForFooUser()
+    {
 
+    }
 
     private function fooUserExists()
     {
