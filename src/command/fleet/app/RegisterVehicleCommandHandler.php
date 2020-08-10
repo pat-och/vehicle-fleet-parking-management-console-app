@@ -7,19 +7,19 @@ namespace App\command\fleet\app;
 
 
 use App\command\fleet\infra\FleetRepositoryInterface;
+use App\command\shared\app\CommandHandler;
+use App\command\shared\app\CommandResponse;
 use Exception;
 
-class RegisterVehicleCommandHandler
+class RegisterVehicleCommandHandler extends CommandHandler
 {
 
     private FleetRepositoryInterface $fleetRepository;
-    private RegisterVehicleCommandResponse $registerVehicleCommandResponse;
 
-    public function __construct(FleetRepositoryInterface $fleetRepository,
-                                RegisterVehicleCommandResponse $registerVehicleCommandResponse)
+    public function __construct(FleetRepositoryInterface $fleetRepository, CommandResponse $commandResponse)
     {
         $this->fleetRepository = $fleetRepository;
-        $this->registerVehicleCommandResponse = $registerVehicleCommandResponse;
+        parent::__construct($commandResponse);
     }
 
     public function __invoke(RegisterVehicleCommand $registerVehicleCommand): void
@@ -29,7 +29,7 @@ class RegisterVehicleCommandHandler
         try {
             $fleet->registerVehicle($registerVehicleCommand->getVehicleRegistrationNumber());
         } catch (Exception $e) {
-            $this->registerVehicleCommandResponse->setError($e->getMessage());
+            $this->getCommandResponse()->setError($e->getMessage());
         }
     }
 

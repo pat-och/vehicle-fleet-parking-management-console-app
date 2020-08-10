@@ -6,8 +6,8 @@ namespace Tests\acceptance\command\fleet;
 
 use App\command\fleet\app\RegisterVehicleCommand;
 use App\command\fleet\app\RegisterVehicleCommandHandler;
-use App\command\fleet\app\RegisterVehicleCommandResponse;
 use App\command\fleet\infra\InMemoryFleetRepository;
+use App\command\shared\app\CommandResponse;
 use PHPUnit\Framework\TestCase;
 
 class RegisterVehicleCommandHandlerTest extends TestCase
@@ -34,7 +34,7 @@ class RegisterVehicleCommandHandlerTest extends TestCase
 
         $registerVehicle = new RegisterVehicleCommandHandler(
             $this->fleetRepository,
-            new RegisterVehicleCommandResponse()
+            new CommandResponse()
         );
 
         $registerVehicle(
@@ -56,15 +56,15 @@ class RegisterVehicleCommandHandlerTest extends TestCase
         $this->givenIHaveMyFleet();
         $this->givenRegisteredFooVehicleRegistrationNumber();
 
-        $registerVehicleCommandResponse = new RegisterVehicleCommandResponse();
-        $registerVehicle = new RegisterVehicleCommandHandler($this->fleetRepository, $registerVehicleCommandResponse);
+        $commandResponse = new CommandResponse();
+        $registerVehicle = new RegisterVehicleCommandHandler($this->fleetRepository, $commandResponse);
         $registerVehicle(
             new RegisterVehicleCommand($this->myUserId, $this->registeredFooVehicleRegistrationNumber)
         );
 
         $this->assertEquals(
             'this vehicle has already been registered into your fleet',
-            $registerVehicleCommandResponse->getError()
+            $commandResponse->getError()
         );
     }
 
@@ -80,7 +80,7 @@ class RegisterVehicleCommandHandlerTest extends TestCase
 
         $registerVehicle = new RegisterVehicleCommandHandler(
             $this->fleetRepository,
-            new RegisterVehicleCommandResponse()
+            new CommandResponse()
         );
 
         $registerVehicle(

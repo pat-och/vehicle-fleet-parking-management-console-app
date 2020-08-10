@@ -10,6 +10,7 @@ use App\command\fleet\app\ParkVehicleCommandHandler;
 use App\command\fleet\app\ParkVehicleCommandResponse;
 use App\command\fleet\domain\Geolocation;
 use App\command\fleet\infra\InMemoryFleetRepository;
+use App\command\shared\app\CommandResponse;
 use PHPUnit\Framework\TestCase;
 
 class ParkVehicleCommandHandlerTest extends TestCase
@@ -41,9 +42,9 @@ class ParkVehicleCommandHandlerTest extends TestCase
         /**
          * act
          */
-        $parkVehicleCommandResponse = new ParkVehicleCommandResponse();
-        $parkVehicle = new ParkVehicleCommandHandler($fleetRepository, new ParkVehicleCommandResponse());
-        $parkVehicle(
+        $commandResponse = new CommandResponse();
+        $parkVehicle = new ParkVehicleCommandHandler($fleetRepository, $commandResponse);
+        $parkVehicle->handle(
             new ParkVehicleCommand($myUserId, $fooVehicleRegistrationNumber, $barLocation)
         );
 
@@ -79,9 +80,10 @@ class ParkVehicleCommandHandlerTest extends TestCase
         /**
          * act
          */
-        $parkVehicleCommandResponse = new ParkVehicleCommandResponse();
-        $parkVehicle = new ParkVehicleCommandHandler($fleetRepository, $parkVehicleCommandResponse);
-        $parkVehicle(
+        $commandResponse = new CommandResponse();
+        $parkVehicleCommandHandler = new ParkVehicleCommandHandler($fleetRepository, $commandResponse);
+
+        $parkVehicleCommandHandler->handle(
             new ParkVehicleCommand($myUserId, $fooVehicleRegistrationNumber, $barLocation)
         );
 
@@ -90,7 +92,7 @@ class ParkVehicleCommandHandlerTest extends TestCase
          */
         $this->assertEquals(
             'This vehicle is already parked at this location.',
-            $parkVehicleCommandResponse->getError()
+            $commandResponse->getError()
         );
     }
 }
