@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace Tests\command\fleet;
+namespace Tests\acceptance\command\fleet;
 
 use PHPUnit\Framework\TestCase;
 
