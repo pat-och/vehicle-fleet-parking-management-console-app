@@ -67,5 +67,21 @@ class InMemoryFleetRepository implements FleetRepositoryInterface
         return $this->fleets;
     }
 
+    public function hasOnlyOneFooUserFleet(string $fooUserId)
+    {
+        $numberOfFleetFound = 0;
+        foreach ($this->fleets as $fleet) {
+            if ($fooUserId === $fleet) {
+                $numberOfFleetFound++;
+                if (2 === $numberOfFleetFound) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+
+    }
+
 
 }

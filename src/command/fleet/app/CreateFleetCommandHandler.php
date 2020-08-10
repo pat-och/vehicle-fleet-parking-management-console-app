@@ -9,9 +9,8 @@ namespace App\command\fleet\app;
 use App\command\fleet\infra\FleetRepositoryInterface;
 use App\command\shared\app\CommandHandler;
 use App\command\shared\app\CommandResponse;
-use Exception;
 
-class RegisterVehicleCommandHandler extends CommandHandler
+class CreateFleetCommandHandler extends CommandHandler
 {
 
     private FleetRepositoryInterface $fleetRepository;
@@ -22,15 +21,13 @@ class RegisterVehicleCommandHandler extends CommandHandler
         parent::__construct($commandResponse);
     }
 
-    public function __invoke(RegisterVehicleCommand $registerVehicleCommand): void
+    public function handle(CreateFleetCommand $createFleetCommand): void
     {
-        $fleet = $this->fleetRepository->getFleet($registerVehicleCommand->getUserId());
-
-        try {
-            $fleet->registerVehicle($registerVehicleCommand->getVehicleRegistrationNumber());
-        } catch (Exception $e) {
-            $this->getCommandResponse()->setError($e->getMessage());
+        if (array_key_exists($createFleetCommand->getUserId(), $this->fleetRepository->all())) {
+            $this->getCommandResponse()->setError('this fleet already exists');
+            return;
         }
-    }
 
+        $this->fleetRepository->addFleet($createFleetCommand->getUserId());
+    }
 }

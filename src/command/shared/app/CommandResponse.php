@@ -3,12 +3,17 @@
 declare(strict_types=1);
 
 
-namespace App\command\fleet\app;
+namespace App\command\shared\app;
 
 
-class ParkVehicleCommandResponse
+class CommandResponse
 {
-    private string $error;
+    private ?string $error;
+
+    public function __construct()
+    {
+        $this->error = null;
+    }
 
     public function setError(string $errorMessage): void
     {
