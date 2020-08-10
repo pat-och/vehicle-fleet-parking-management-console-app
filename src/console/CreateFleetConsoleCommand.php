@@ -13,7 +13,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Tests\acceptance\query\FleetQueryHandlerTest;
 
 class CreateFleetConsoleCommand extends Command
 {
@@ -50,7 +49,6 @@ class CreateFleetConsoleCommand extends Command
         }
 
         $fleetRepository = new InMemoryFleetRepository();
-        $fleetRepository->addFleet('12');
 
         $commandResponse = new CommandResponse();
         $createFleetCommandHandler = new CreateFleetCommandHandler($fleetRepository, $commandResponse);
