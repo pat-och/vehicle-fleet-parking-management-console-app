@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Tests\acceptance\command\fleet;
 
+use App\command\fleet\app\CreateFleetCommand;
 use App\command\fleet\app\CreateFleetCommandHandler;
 use PHPUnit\Framework\TestCase;
 use App\command\shared\app\CommandResponse;
@@ -21,7 +22,12 @@ class CreateFleetCommandHandlerTest extends TestCase
         $fooUserId = $this->fooUserExists();
 
         $fleetRepository = new InMemoryFleetRepository();
-        $this->createFleet($fooUserId, $fleetRepository);
+        $createFleetCommand = new CreateFleetCommand($fooUserId);
+
+        $this->createFleet(
+            $createFleetCommand,
+            $fleetRepository
+        );
 
         $this->assertNotNull($fleetRepository->getFleet($fooUserId));
     }
@@ -31,10 +37,10 @@ class CreateFleetCommandHandlerTest extends TestCase
         return 'foo';
     }
 
-    private function createFleet(string $fooUserId, FleetRepositoryInterface $fleetRepository)
+    private function createFleet(CreateFleetCommand $createFleetCommand, FleetRepositoryInterface $fleetRepository)
     {
         $commandResponse = new CommandResponse();
         $createFleetCommandHandler = new CreateFleetCommandHandler($fleetRepository, $commandResponse);
-        $createFleetCommandHandler->handle($fooUserId);
+        $createFleetCommandHandler->handle($createFleetCommand->getUserId());
     }
 }
