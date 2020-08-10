@@ -22,7 +22,7 @@ class CreateFleetCommandHandlerTest extends TestCase
         $fooUserId = $this->fooUserExists();
 
         $fleetRepository = new InMemoryFleetRepository();
-        $this->createFleet($fooUserId, $fleetRepository);
+        $this->createFleet($fooUserId, $fleetRepository, new CommandResponse());
 
         $this->assertNotNull($fleetRepository->getFleet($fooUserId));
     }
@@ -35,9 +35,17 @@ class CreateFleetCommandHandlerTest extends TestCase
         $fooUserId = $this->fooUserExists();
 
         $fleetRepository = new InMemoryFleetRepository();
+        $this->fooUserHasAlreadyHisOwnFleet($fooUserId, $fleetRepository);
+
+
+        $commandResponse = new CommandResponse();
+        $this->createFleet($fooUserId, $fleetRepository, $commandResponse);
+
+        print_r($commandResponse);
+
 
         $this->assertTrue(
-            $fleetRepository->hasOnlyOneFooUserFleet($fooUserId)
+            'this fleet already exists' == $commandResponse->getError()
         );
     }
 
@@ -46,12 +54,18 @@ class CreateFleetCommandHandlerTest extends TestCase
         return 'foo';
     }
 
-    private function createFleet(string $userId, FleetRepositoryInterface $fleetRepository)
+    private function createFleet(string $userId,
+                                 FleetRepositoryInterface $fleetRepository,
+                                 CommandResponse $commandResponse)
     {
         $createFleetCommand = new CreateFleetCommand($userId);
-        $commandResponse = new CommandResponse();
 
         $createFleetCommandHandler = new CreateFleetCommandHandler($fleetRepository, $commandResponse);
-        $createFleetCommandHandler->handle($createFleetCommand->getUserId());
+        $createFleetCommandHandler->handle($createFleetCommand);
+    }
+
+    private function fooUserHasAlreadyHisOwnFleet(string $userId, InMemoryFleetRepository $fleetRepository)
+    {
+        $fleetRepository->addFleet($userId);
     }
 }

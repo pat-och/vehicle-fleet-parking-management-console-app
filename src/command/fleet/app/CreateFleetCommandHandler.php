@@ -7,24 +7,27 @@ namespace App\command\fleet\app;
 
 
 use App\command\fleet\infra\FleetRepositoryInterface;
+use App\command\shared\app\CommandHandler;
 use App\command\shared\app\CommandResponse;
 
-class CreateFleetCommandHandler
+class CreateFleetCommandHandler extends CommandHandler
 {
 
     private FleetRepositoryInterface $fleetRepository;
-    private CommandResponse $commandResponse;
 
     public function __construct(FleetRepositoryInterface $fleetRepository, CommandResponse $commandResponse)
     {
         $this->fleetRepository = $fleetRepository;
-        $this->commandResponse = $commandResponse;
+        parent::__construct($commandResponse);
     }
 
-    public function handle(string $userId): void
+    public function handle(CreateFleetCommand $createFleetCommand): void
     {
-        if (!array_key_exists($userId, $this->fleetRepository->all())) {
-            $this->fleetRepository->addFleet($userId);
+        if (array_key_exists($createFleetCommand->getUserId(), $this->fleetRepository->all())) {
+            $this->getCommandResponse()->setError('this fleet already exists');
+            return;
         }
+
+        $this->fleetRepository->addFleet($createFleetCommand->getUserId());
     }
 }
