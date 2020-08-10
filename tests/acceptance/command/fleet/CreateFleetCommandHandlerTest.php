@@ -32,7 +32,13 @@ class CreateFleetCommandHandlerTest extends TestCase
      */
     public function cantCreateTwiceSameFleetForFooUser()
     {
+        $fooUserId = $this->fooUserExists();
 
+        $fleetRepository = new InMemoryFleetRepository();
+
+        $this->assertTrue(
+            $fleetRepository->hasOnlyOneFooUserFleet($fooUserId)
+        );
     }
 
     private function fooUserExists()
