@@ -40,8 +40,7 @@ class CreateFleetConsoleCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $userId = $input->getArgument('userId');
 
-        if (!isset($userId) || $userId <= 0) {
-
+        if (!isset($userId)) {
             $io->error('invalid user ID');
             return 0;
         }
