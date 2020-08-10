@@ -3,27 +3,34 @@
 namespace App\console;
 
 use App\command\fleet\infra\FleetRepositoryInterface;
+use App\query\app\FleetQueryHandlerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Tests\acceptance\query\FleetQueryHandlerTest;
 
 class CreateFleetConsoleCommand extends Command
 {
     protected static $defaultName = 'fleet:create';
-    private FleetRepositoryInterface $fleetRepository;
 
-    public function __construct(FleetRepositoryInterface $fleetRepository, string $name = null)
+    private FleetRepositoryInterface $fleetRepository;
+    private FleetQueryHandlerInterface $fleetQueryHandler;
+
+    public function __construct(FleetRepositoryInterface $fleetRepository,
+                                FleetQueryHandlerInterface $fleetQueryHandler)
     {
         $this->fleetRepository = $fleetRepository;
-        parent::__construct($name);
+        $this->fleetQueryHandler = $fleetQueryHandler;
+
+        parent::__construct(self::$defaultName);
     }
 
     protected function configure()
     {
         $this
-            ->setDescription('Create a fleet for a user')
+            ->setDescription('Create a fleet for a given user with his ID')
             ->addArgument('userId', InputArgument::REQUIRED, 'enter user ID')
         ;
     }
@@ -39,7 +46,7 @@ class CreateFleetConsoleCommand extends Command
             return 0;
         }
 
-        if (array_key_exists($userId, $this->fleetRepository->all())) {
+        if (array_key_exists($userId, $this->fleetQueryHandler->getAll())) {
 
             $io->error('this user already has a fleet ID ' . $userId);
             return 0;
