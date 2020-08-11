@@ -2,14 +2,10 @@
 
 namespace App\console;
 
-use App\command\fleet\app\CreateFleetCommand;
-use App\command\fleet\app\CreateFleetCommandHandler;
 use App\command\fleet\app\RegisterVehicleCommand;
 use App\command\fleet\app\RegisterVehicleCommandHandler;
-use App\command\fleet\infra\FleetRepositoryInterface;
 use App\command\fleet\infra\InMemoryFleetRepository;
 use App\command\shared\app\CommandResponse;
-use App\query\app\FleetQueryHandlerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -47,7 +43,6 @@ class RegisterVehicleConsoleCommand extends Command
         $fleetRepository = new InMemoryFleetRepository();
 
         $fleetRepository->addFleet($fleetId);
-//        $fleetRepository->addVehicleToFleet($vehiclePlateNumber, $fleetId);
 
         $commandResponse = new CommandResponse();
 
