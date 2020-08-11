@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\console;
 
 use App\command\fleet\app\CreateFleetCommand;
