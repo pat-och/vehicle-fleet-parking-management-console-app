@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace Tests\acceptance\query;
+namespace Tests\acceptance\query\fleet;
 
 use App\query\app\FleetQueryHandlerInterface;
 use App\query\infra\InMemoryFleetQueryHandler;
