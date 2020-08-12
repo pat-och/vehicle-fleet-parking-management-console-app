@@ -41,9 +41,6 @@ class CreateFleetCommandHandlerTest extends TestCase
         $commandResponse = new CommandResponse();
         $this->createFleet($fooUserId, $fleetRepository, $commandResponse);
 
-        print_r($commandResponse);
-
-
         $this->assertTrue(
             'this fleet already exists' == $commandResponse->getError()
         );
