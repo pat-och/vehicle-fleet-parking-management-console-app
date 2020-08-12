@@ -51,6 +51,7 @@ class LocalizeVehicleCommand extends Command
 
         if (!isset($locateVehicle)) {
             $io->error('impossible to locate this vehicle.');
+            return 0;
         }
 
         $io->success(
