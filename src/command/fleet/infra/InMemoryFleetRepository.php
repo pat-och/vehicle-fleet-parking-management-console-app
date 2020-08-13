@@ -58,11 +58,6 @@ class InMemoryFleetRepository implements FleetRepositoryInterface
         return new Geolocation('43.300000', '5.400000');
     }
 
-    public function all(): array
-    {
-        return $this->fleets;
-    }
-
     public function hasOnlyOneFooUserFleet(string $fooUserId)
     {
         $numberOfFleetFound = 0;
@@ -80,4 +75,8 @@ class InMemoryFleetRepository implements FleetRepositoryInterface
     }
 
 
+    public function userAlreadyHasFleet(string $userId): bool
+    {
+        return isset($this->fleets[$userId]);
+    }
 }

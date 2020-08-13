@@ -23,7 +23,7 @@ class CreateFleetCommandHandler extends CommandHandler
 
     public function handle(CreateFleetCommand $createFleetCommand): void
     {
-        if (array_key_exists($createFleetCommand->getUserId(), $this->fleetRepository->all())) {
+        if ($this->fleetRepository->userAlreadyHasFleet($createFleetCommand->getUserId())) {
             $this->getCommandResponse()->setError('this fleet already exists');
             return;
         }

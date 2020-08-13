@@ -10,9 +10,12 @@ use App\command\fleet\domain\Fleet;
 use App\command\fleet\domain\Geolocation;
 use App\Repository\FleetRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Fleet as DoctrineFleet;
 
 class DoctrineFleetRepository implements FleetRepositoryInterface
 {
+
+    private array $fleets = array();
 
     private FleetRepository $fleetRepository;
     private EntityManagerInterface $entityManager;
@@ -25,7 +28,13 @@ class DoctrineFleetRepository implements FleetRepositoryInterface
 
     public function addFleet(string $userId): void
     {
-        // TODO: Implement addFleet() method.
+        $doctrineFleet = new DoctrineFleet();
+
+        $doctrineFleet->setUuid($userId);
+        $doctrineFleet->setUserId($userId);
+
+        $this->entityManager->persist($doctrineFleet);
+        $this->entityManager->flush();
     }
 
     public function getFleet(string $userId): ?Fleet
@@ -38,8 +47,10 @@ class DoctrineFleetRepository implements FleetRepositoryInterface
         // TODO: Implement addVehicleToFleet() method.
     }
 
-    public function all(): array
+
+    public function userAlreadyHasFleet(string $userId): bool
     {
-        // TODO: Implement all() method.
+        $fleet = $this->fleetRepository->findOneBy(array('user_id' => $userId));
+        return isset($fleet);
     }
 }
