@@ -3,7 +3,6 @@
 namespace App\console;
 
 use App\query\app\FleetQueryHandlerInterface;
-use App\query\infra\InMemoryFleetQueryHandler;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,13 +12,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class LocalizeVehicleCommand extends Command
 {
-    protected static $defaultName = 'localize-vehicle';
+    protected static $defaultName = 'fleet:localize-vehicle';
     private FleetQueryHandlerInterface $fleetQueryHandler;
 
     public function __construct(FleetQueryHandlerInterface $fleetQueryHandler, string $name = null)
     {
-//        $this->fleetQueryHandler = $fleetQueryHandler;
-        $this->fleetQueryHandler = new InMemoryFleetQueryHandler();
+        $this->fleetQueryHandler = $fleetQueryHandler;
         parent::__construct($name);
     }
 
