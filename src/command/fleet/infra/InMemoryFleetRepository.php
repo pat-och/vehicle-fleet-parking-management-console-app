@@ -15,10 +15,6 @@ class InMemoryFleetRepository implements FleetRepositoryInterface
 
     private array $fleets = array();
 
-    public function __construct()
-    {
-//        $this->fleets[12] =  array();
-    }
 
     public function addFleet(string $userId): void
     {
