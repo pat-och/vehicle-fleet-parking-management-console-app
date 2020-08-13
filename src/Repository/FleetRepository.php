@@ -2,11 +2,8 @@
 
 namespace App\Repository;
 
-use App\command\fleet\domain\Geolocation;
-use App\command\fleet\infra\FleetRepositoryInterface;
 use App\Entity\Fleet;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -15,13 +12,10 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Fleet[]    findAll()
  * @method Fleet[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class FleetRepository extends ServiceEntityRepository implements FleetRepositoryInterface
+class FleetRepository extends ServiceEntityRepository
 {
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->entityManager = $entityManager;
         parent::__construct($registry, Fleet::class);
     }
 
@@ -53,25 +47,4 @@ class FleetRepository extends ServiceEntityRepository implements FleetRepository
         ;
     }
     */
-
-    public function addFleet(string $userId): void
-    {
-        $doctrineFleet = new Fleet();
-        $doctrineFleet->setUuid($userId);
-        $doctrineFleet->setUserId($userId);
-
-        $this->entityManager->persist($doctrineFleet);
-        $this->entityManager->flush();
-
-    }
-
-    public function addVehicleToFleet(string $vehicleRegistrationNumber, string $userId, Geolocation $geolocation = null): void
-    {
-        // TODO: Implement addVehicleToFleet() method.
-    }
-
-    public function all(): array
-    {
-        return parent::findAll();
-    }
 }

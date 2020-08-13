@@ -28,6 +28,13 @@ class RegisterVehicleCommandHandler extends CommandHandler
 
         try {
             $fleet->registerVehicle($registerVehicleCommand->getVehicleRegistrationNumber());
+
+            $this->fleetRepository->addVehicleToFleet(
+                $registerVehicleCommand->getVehicleRegistrationNumber(),
+                $registerVehicleCommand->getUserId()
+            );
+
+
         } catch (Exception $e) {
             $this->getCommandResponse()->setError($e->getMessage());
         }

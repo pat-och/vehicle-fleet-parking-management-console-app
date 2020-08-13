@@ -23,14 +23,19 @@ class Vehicle
     private $uuid;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true))
      */
     private $latitude;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true))
      */
     private $longitude;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $registration_number;
 
     public function getId(): ?int
     {
@@ -69,6 +74,18 @@ class Vehicle
     public function setLongitude(string $longitude): self
     {
         $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    public function getRegistrationNumber(): ?string
+    {
+        return $this->registration_number;
+    }
+
+    public function setRegistrationNumber(string $registration_number): self
+    {
+        $this->registration_number = $registration_number;
 
         return $this;
     }

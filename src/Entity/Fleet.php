@@ -30,9 +30,10 @@ class Fleet
     private $user_id;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Vehicle::class)
+     * @ORM\ManyToMany(targetEntity=Vehicle::class, cascade={"persist"})
      */
     private $Vehicles;
+
 
     public function __construct()
     {

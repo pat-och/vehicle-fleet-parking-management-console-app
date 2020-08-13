@@ -13,7 +13,7 @@ services:
 
     # autowiring
     App\command\fleet\infra\FleetRepositoryInterface:
-        class: App\Repository\FleetRepository
+        class: App\command\fleet\infra\DoctrineFleetRepository
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name

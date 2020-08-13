@@ -4,6 +4,7 @@ namespace App\console;
 
 use App\command\fleet\app\RegisterVehicleCommand;
 use App\command\fleet\app\RegisterVehicleCommandHandler;
+use App\command\fleet\infra\FleetRepositoryInterface;
 use App\command\fleet\infra\InMemoryFleetRepository;
 use App\command\shared\app\CommandResponse;
 use Symfony\Component\Console\Command\Command;
@@ -15,6 +16,14 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class RegisterVehicleConsoleCommand extends Command
 {
     protected static $defaultName = 'fleet:register-vehicle';
+
+    private FleetRepositoryInterface $fleetRepository;
+
+    public function __construct(FleetRepositoryInterface $fleetRepository)
+    {
+        $this->fleetRepository = $fleetRepository;
+        parent::__construct(self::$defaultName);
+    }
 
     protected function configure()
     {
@@ -40,13 +49,9 @@ class RegisterVehicleConsoleCommand extends Command
             return 0;
         }
 
-        $fleetRepository = new InMemoryFleetRepository();
-
-        $fleetRepository->addFleet($fleetId);
-
         $commandResponse = new CommandResponse();
 
-        $registerVehicleCommandHandler = new RegisterVehicleCommandHandler($fleetRepository, $commandResponse);
+        $registerVehicleCommandHandler = new RegisterVehicleCommandHandler($this->fleetRepository, $commandResponse);
         $registerVehicleCommandHandler(
             new RegisterVehicleCommand($fleetId, $vehiclePlateNumber)
         );
