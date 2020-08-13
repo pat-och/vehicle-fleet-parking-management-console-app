@@ -12,7 +12,7 @@ use App\command\fleet\domain\Geolocation;
 interface FleetRepositoryInterface
 {
     public function addFleet(string $userId): void;
-    public function getFleet(string $userId): ?Fleet;
+//    public function getFleet(string $userId): ?Fleet;
     public function addVehicleToFleet(string $vehicleRegistrationNumber, string $userId, Geolocation $geolocation = null): void;
     public function all(): array;
 }
