@@ -33,8 +33,6 @@ class Fleet
             throw new Exception('this vehicle has already been registered into your fleet');
         }
 
-
-
         $this->vehicles[$registrationNumber] = $vehicle;
     }
 
@@ -47,5 +45,10 @@ class Fleet
         }
 
         return null;
+    }
+
+    public function getId()
+    {
+        return $this->userId;
     }
 }

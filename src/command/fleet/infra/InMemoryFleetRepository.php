@@ -79,4 +79,9 @@ class InMemoryFleetRepository implements FleetRepositoryInterface
     {
         return isset($this->fleets[$userId]);
     }
+
+    public function updateFleet($fleet): void
+    {
+        // TODO: Implement updateFleet() method.
+    }
 }
