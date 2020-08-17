@@ -58,15 +58,21 @@ class DoctrineFleetRepository implements FleetRepositoryInterface
                                       string $userId,
                                       Geolocation $geolocation = null): void
     {
-        $doctrineFleet = $this->fleetRepository->findOneBy(array('user_id' => $userId));
+        $userFleet = $this->fleetRepository->findOneBy(array('user_id' => $userId));
+
+        foreach ( $userFleet->getVehicles() as $vehicle) {
+            if ($vehicleRegistrationNumber === $vehicle->getRegistrationNumber()) {
+                return;
+            }
+        }
 
         $vehicle = new Vehicle();
         $vehicle->setUuid($vehicleRegistrationNumber);
         $vehicle->setRegistrationNumber($vehicleRegistrationNumber);
 
-        $doctrineFleet->addVehicle($vehicle);
+        $userFleet->addVehicle($vehicle);
 
-        $this->entityManager->persist($doctrineFleet);
+        $this->entityManager->persist($userFleet);
         $this->entityManager->flush();
     }
 
