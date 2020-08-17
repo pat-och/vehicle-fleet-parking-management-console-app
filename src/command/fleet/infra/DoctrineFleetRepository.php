@@ -58,8 +58,6 @@ class DoctrineFleetRepository implements FleetRepositoryInterface
                                       string $userId,
                                       Geolocation $geolocation = null): void
     {
-        print_r('wtffffffffffffffffffffffffffffffff');
-
         $doctrineFleet = $this->fleetRepository->findOneBy(array('user_id' => $userId));
 
         $vehicle = new Vehicle();
