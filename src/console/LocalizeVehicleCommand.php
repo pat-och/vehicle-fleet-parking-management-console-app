@@ -47,8 +47,13 @@ class LocalizeVehicleCommand extends Command
 
         $locateVehicle = $this->fleetQueryHandler->locateVehicle($vehiclePlateNumber, $fleetId);
 
-        if (!isset($locateVehicle)) {
+        if (null === $locateVehicle) {
             $io->error('impossible to locate this vehicle.');
+            return 0;
+        }
+
+        if (null === $locateVehicle->latitude && null === $locateVehicle->longitude) {
+            $io->error('This vehicle has not been geolocated yet.');
             return 0;
         }
 
