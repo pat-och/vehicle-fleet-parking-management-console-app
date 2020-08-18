@@ -30,9 +30,6 @@ class DoctrineFleetQueryHandler implements FleetQueryHandlerInterface
     {
         $fleet = $this->fleetRepository->findOneBy(array('uuid' => $fleetId));
 
-        print_r($fleet->getUuid());
-
-
         if (!isset($fleet)) {
             return null;
         }
