@@ -59,7 +59,7 @@ class LocalizeVehicleCommand extends Command
 
         $io->success(
             sprintf(
-                'Vehicle %s located at geopoint %s, %s',
+                'Vehicle %s located at geopoint (%s, %s)',
                 $locateVehicle->vehicleId,
                 $locateVehicle->latitude,
                 $locateVehicle->longitude
