@@ -8,7 +8,8 @@ namespace App\command\fleet\infra;
 
 use App\command\fleet\domain\Fleet;
 use App\command\fleet\domain\Geolocation;
-use App\Entity\Vehicle;
+use App\command\fleet\domain\Vehicle;
+use App\Entity\Vehicle as DoctrineVehicle;
 use App\Repository\FleetRepository;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -51,24 +52,42 @@ class DoctrineFleetRepository implements FleetRepositoryInterface
             return null;
         }
 
-        return new Fleet($userId);
+        $vehicles = array();
+        foreach ($doctrineFleet->getVehicles()->toArray() as $vehicle) {
+
+            $geolocation = null;
+            if (null !== $vehicle->getLatitude() && null !== $vehicle->getLongitude()) {
+                $geolocation = new Geolocation($vehicle->getLatitude(), $vehicle->getlongitude());
+            }
+
+            $vehicles[$vehicle->getRegistrationNumber()] = new Vehicle(
+                $vehicle->getRegistrationNumber(),
+                $geolocation
+            );
+        }
+
+        return new Fleet($userId, $vehicles);
     }
 
     public function addVehicleToFleet(string $vehicleRegistrationNumber,
                                       string $userId,
                                       Geolocation $geolocation = null): void
     {
-        print_r('wtffffffffffffffffffffffffffffffff');
+        $userFleet = $this->fleetRepository->findOneBy(array('user_id' => $userId));
 
-        $doctrineFleet = $this->fleetRepository->findOneBy(array('user_id' => $userId));
+        foreach ( $userFleet->getVehicles() as $vehicle) {
+            if ($vehicleRegistrationNumber === $vehicle->getRegistrationNumber()) {
+                return;
+            }
+        }
 
-        $vehicle = new Vehicle();
+        $vehicle = new DoctrineVehicle();
         $vehicle->setUuid($vehicleRegistrationNumber);
         $vehicle->setRegistrationNumber($vehicleRegistrationNumber);
 
-        $doctrineFleet->addVehicle($vehicle);
+        $userFleet->addVehicle($vehicle);
 
-        $this->entityManager->persist($doctrineFleet);
+        $this->entityManager->persist($userFleet);
         $this->entityManager->flush();
     }
 

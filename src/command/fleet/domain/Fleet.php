@@ -15,9 +15,10 @@ class Fleet
     private string $userId;
     private array $vehicles = array();
 
-    public function __construct(string $userId)
+    public function __construct(string $userId, array $vehicles = [])
     {
         $this->userId = $userId;
+        $this->vehicles = $vehicles;
     }
 
     public function getVehicles(): array
@@ -27,6 +28,7 @@ class Fleet
 
     public function registerVehicle(string $registrationNumber, Geolocation $geolocation = null): void
     {
+
         $vehicle = new Vehicle($registrationNumber, $geolocation);
 
         if (array_key_exists($registrationNumber, $this->vehicles)) {
