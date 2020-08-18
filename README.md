@@ -22,7 +22,7 @@
 `php bin/console fleet:register-vehicle 007 abc`
 (do it twice for success and error)
 
-`php bin/console fleet:localize-vehicle 007 abc` => "error" message)
+`php bin/console fleet:localize-vehicle 007 abc` (get an error message)
 
 then `php bin/console fleet:geolocate-for-inextenso-demo-only` to add (123, 456) geopoint to all vehicles in DB
 
