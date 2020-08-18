@@ -26,7 +26,7 @@
 
 then `php bin/console fleet:geolocate-for-inextenso-demo-only` to add (123, 456) geopoint to all vehicles in DB
 
-then rerun `php bin/console fleet:geolocate-for-inextenso-demo-only` to have success message
+then rerun `php bin/console fleet:localize-vehicle 007 abc` to get success message
 
 
 
