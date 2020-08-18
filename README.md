@@ -10,17 +10,17 @@
 
 `php bin/console doctrine:migration:migrate`
 
-## run
+## run tests
 
 `php bin/phpunit tests` to run acceptance tests "grosses mailles"
 
-`php bin/console fleet:create 007`
-(do it twice)
+## run console commands
 
+`php bin/console fleet:create 007`
+(do it twice for success and error)
 
 `php bin/console fleet:register-vehicle 007 abc`
 (do it twice for success and error)
-
 
 `php bin/console fleet:localize-vehicle 007 abc` => "error" message)
 
